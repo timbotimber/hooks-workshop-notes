@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import Projects from './components/Projects';
 import Signup from './components/Signup';
+import Login from './components/Login';
 import ProjectDetails from './components/ProjectDetails';
 import Navbar from './components/Navbar';
 
@@ -24,21 +25,37 @@ class App extends Component {
       <div className="App" >
         <Navbar user={this.state.user} setUser={this.setUser} />
 
-        <Route
+        {/* <Route
           exact
           path='/projects'
           component={Projects}
+        /> */}
+
+        <Route
+          exact
+          path='/projects'
+          render={props => {
+            if (this.state.user) {
+              return <Projects {...props} />
+            } else return <Redirect to='/' />
+          }}
         />
+
         <Route
           exact
           path='/projects/:id'
-          component={ProjectDetails}
+          render={props => <ProjectDetails user={this.state.user} {...props} />}
         />
 
         <Route
           exact
           path='/signup'
           render={props => <Signup setUser={this.setUser} {...props} />}
+        />
+        <Route
+          exact
+          path='/login'
+          render={props => <Login setUser={this.setUser} {...props} />}
         />
       </div>
     );

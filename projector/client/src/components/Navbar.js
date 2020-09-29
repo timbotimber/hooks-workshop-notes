@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Navbar as Nav } from 'react-bootstrap';
 import { logout } from '../services/auth';
 
+
 const handleLogout = props => {
   logout().then(() => {
     props.setUser(null);
@@ -29,6 +30,9 @@ export default function Navbar(props) {
           <>
             <Nav.Brand>
               <Link to='/signup'>Signup</Link>
+            </Nav.Brand>
+            <Nav.Brand>
+              <Link to='/login'>Login</Link>
             </Nav.Brand>
           </>
         )}

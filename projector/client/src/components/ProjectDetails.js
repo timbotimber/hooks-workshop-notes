@@ -84,13 +84,23 @@ export default class ProjectDetails extends Component {
   render() {
     if (this.state.error) return <div>{this.state.error}</div>
     if (!this.state.project) return <p>Loading ...</p>
+
+    let allowedToDelete = false;
+    const user = this.props.user;
+    const owner = this.state.project.owner;
+    if (user && user._id === owner) allowedToDelete = true;
+
     return (
       <div>
         <h1>{this.state.project.title}</h1>
         <p>{this.state.project.description}</p>
-        <Button variant='danger' onClick={this.deleteProject}>
-          Delete Project
-        </Button>
+
+        {allowedToDelete && (
+          <Button variant='danger' onClick={this.deleteProject}>
+            Delete Project
+          </Button>
+        )}
+
         <Button onClick={this.toggleEditForm}>
           Show Edit Form
         </Button>

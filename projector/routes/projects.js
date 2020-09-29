@@ -44,7 +44,8 @@ router.post('/', (req, res) => {
   const { title, description } = req.body;
   Project.create({
     title,
-    description
+    description,
+    owner: req.user._id
   })
     .then(project => {
       res.status(201).json(project);
