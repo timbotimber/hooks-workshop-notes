@@ -1,44 +1,46 @@
 // src/components/Project.js
 
-import React, { Component } from 'react'
-import axios from 'axios';
-import ProjectList from './ProjectList';
-import AddProject from './AddProject';
+import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import ProjectList from "./ProjectList";
+import AddProject from "./AddProject";
+import Child from "./Child.js";
+import { UserContext } from "./UserContext";
 
-export default class Projects extends Component {
+const Projects = () => {
+  const [details, setDetails] = useState({
+    name: "timmy",
+    location: "South Park",
+  });
+  const [projects, setProjects] = useState([]);
 
-  state = {
-    projects: []
-  }
-
-  componentDidMount() {
-    this.getData();
-  }
+  useEffect(() => {
+    getData();
+  }, []);
 
   // componentDidUpdate() {
   //   console.log('update');
   //   // this.getData();
   // }
 
-  getData = () => {
-    axios.get('/api/projects')
-      .then(response => {
-        console.log(response);
-        this.setState({
-          projects: response.data
-        })
-      })
-      .catch(error => {
-        console.log(error);
-      })
-  }
+  const getData = async () => {
+    let response = await axios.get("api/projects");
+    console.log(response);
+    setProjects(response.data);
+  };
 
-  render() {
-    return (
-      <div className='projects-container'>
-        <AddProject getData={this.getData} />
-        <ProjectList projects={this.state.projects} />
-      </div>
-    )
-  }
-}
+  // <AddProject getData={this.getData} />
+
+  return (
+    <div className="projects-container">
+      <h1>Hello Patients</h1>
+      <UserContext.Provider value={{ details, setDetails }}>
+        <Child userDetails={details} />
+      </UserContext.Provider>
+      <ProjectList projects={projects} />
+      <AddProject getData={getData} />
+    </div>
+  );
+};
+
+export default Projects;

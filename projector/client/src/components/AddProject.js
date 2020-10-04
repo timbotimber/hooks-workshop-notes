@@ -1,63 +1,67 @@
-import React, { Component } from 'react'
-import { Form, Button } from 'react-bootstrap';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { Form, Button } from "react-bootstrap";
+import axios from "axios";
 
-export default class AddProject extends Component {
+const AddProject = (props) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
-  state = {
-    title: '',
-    description: ''
-  }
-  handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('/api/projects', {
-      title: this.state.title,
-      description: this.state.description
-    })
+    axios
+      .post("/api/projects", {
+        title: title,
+        description: description,
+      })
       .then(() => {
         this.setState({
-          title: '',
-          description: ''
+          title: "",
+          description: "",
         });
-        this.props.getData();
+        props.getData();
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
-      })
-  }
-  handleChange = event => {
+      });
+  };
+
+  const handleChange = (event) => {
     const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    })
-  }
+    if (name === "title") {
+      setTitle(value);
+    }
 
-  render() {
-    return (
-      <Form onSubmit={this.handleSubmit}>
-        <Form.Group>
-          <Form.Label htmlFor='title'>Title: </Form.Label>
-          <Form.Control
-            type='text'
-            id='title'
-            name='title'
-            value={this.state.title}
-            onChange={this.handleChange}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label htmlFor='description'>Description: </Form.Label>
-          <Form.Control
-            type='text'
-            id='description'
-            name='description'
-            value={this.state.description}
-            onChange={this.handleChange}
-          />
-        </Form.Group>
+    if (name === "description") {
+      setDescription(value);
+    }
+  };
 
-        <Button type='submit'>Add a project</Button>
-      </Form>
-    )
-  }
-}
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Form.Group>
+        <Form.Label htmlFor="title">Title: </Form.Label>
+        <Form.Control
+          type="text"
+          id="title"
+          name="title"
+          value={title}
+          onChange={handleChange}
+        />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label htmlFor="description">Description: </Form.Label>
+        <Form.Control
+          type="text"
+          id="description"
+          name="description"
+          value={description}
+          onChange={handleChange}
+        />
+      </Form.Group>
+
+      <Button type="submit">Add a project</Button>
+    </Form>
+  );
+};
+
+export default AddProject;
