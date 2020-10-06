@@ -1,5 +1,3 @@
-// src/components/Project.js
-
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import ProjectList from "./ProjectList";
@@ -17,11 +15,6 @@ const Projects = () => {
   useEffect(() => {
     getData();
   }, []);
-
-  // componentDidUpdate() {
-  //   console.log('update');
-  //   // this.getData();
-  // }
 
   const getData = async () => {
     let response = await axios.get("api/projects");
